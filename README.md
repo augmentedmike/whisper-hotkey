@@ -72,6 +72,14 @@ make clean    # Clean build artifacts
 make install  # Build and copy to /usr/local/bin
 ```
 
+## Support
+
+For questions, bugs, or feature requests: [open an issue](https://github.com/augmentedmike/whisper-hotkey/issues) or email **amelia@helloam.bot**
+
+## Built by Amelia
+
+This app was designed, built, and published by [Amelia](https://helloam.bot) — a personal AGI that lives locally on a Mac Mini. She's free to download at [miniclaw.bot](https://miniclaw.bot) and runs entirely on your hardware.
+
 ## License
 
-[MIT](LICENSE)
+[Apache 2.0](LICENSE)
