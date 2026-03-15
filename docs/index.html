@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisper Hotkey — Free, offline speech-to-text for macOS</title>
+    <meta name="description" content="Press Ctrl+T, talk, press Return. Free, offline speech-to-text for macOS powered by whisper.cpp.">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg-surface: #161b22;
+            --bg-elevated: #1c2128;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --border: #30363d;
+            --green: #3fb950;
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 100px 0 60px;
+        }
+
+        .hero-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .hero .tagline {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto 32px;
+        }
+
+        .hero .hotkey-demo {
+            font-family: "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 18px;
+            color: var(--accent);
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 32px;
+            display: inline-block;
+            margin-bottom: 40px;
+        }
+
+        .hero .hotkey-demo kbd {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 16px;
+            color: var(--text);
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+        }
+
+        /* Features */
+        .features {
+            padding: 60px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .feature {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .feature h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .feature p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Install */
+        .install {
+            padding: 60px 0;
+        }
+
+        .install h2, .why h2, .usage h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .code-block {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            font-family: "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-x: auto;
+            color: var(--text);
+        }
+
+        .code-block .comment {
+            color: var(--text-muted);
+        }
+
+        .code-block .cmd {
+            color: var(--green);
+        }
+
+        /* Usage */
+        .usage {
+            padding: 60px 0;
+        }
+
+        .usage-steps {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .step-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .step kbd {
+            display: inline-block;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 4px 12px;
+            font-family: "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Why */
+        .why {
+            padding: 60px 0;
+        }
+
+        .comparison {
+            display: grid;
+            gap: 16px;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+        }
+
+        .comparison-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .comparison-item h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .comparison-item p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .comparison-item.highlight {
+            border-color: var(--green);
+            background: rgba(63, 185, 80, 0.05);
+        }
+
+        /* Requirements */
+        .requirements {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .requirements h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .req-list {
+            list-style: none;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .req-list li {
+            font-size: 16px;
+            padding: 6px 0;
+            color: var(--text-muted);
+        }
+
+        .req-list li::before {
+            content: "- ";
+            color: var(--border);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: var(--text-muted);
+            font-size: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .hero { padding: 60px 0 40px; }
+            .hero h1 { font-size: 32px; }
+            .hero .tagline { font-size: 17px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .usage-steps { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <section class="hero">
+            <span class="hero-icon" aria-hidden="true">&#127908;</span>
+            <h1>Whisper Hotkey</h1>
+            <p class="tagline">Free, offline speech-to-text for macOS. One hotkey. No cloud. No subscription.</p>
+            <div class="hotkey-demo">
+                <kbd>Ctrl</kbd> + <kbd>T</kbd> &rarr; talk &rarr; <kbd>Return</kbd>
+            </div>
+            <div class="cta-group">
+                <a href="https://github.com/augmentedmike/whisper-hotkey" class="btn btn-primary">View on GitHub</a>
+                <a href="#install" class="btn btn-secondary">Install</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="features-grid">
+                <div class="feature">
+                    <span class="feature-icon" aria-hidden="true">&#128274;</span>
+                    <h3>Completely Local</h3>
+                    <p>Audio never leaves your Mac. Powered by whisper.cpp running directly on your hardware.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon" aria-hidden="true">&#128176;</span>
+                    <h3>Free Forever</h3>
+                    <p>No API keys, no accounts, no usage limits. One binary, zero recurring costs.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon" aria-hidden="true">&#9889;</span>
+                    <h3>Fast on Apple Silicon</h3>
+                    <p>Optimized for M-series chips. Transcription completes in seconds, not minutes.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon" aria-hidden="true">&#127760;</span>
+                    <h3>Works Everywhere</h3>
+                    <p>Types directly into any focused text field. Slack, Notes, VS Code, your terminal.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="usage">
+            <h2>How It Works</h2>
+            <div class="usage-steps">
+                <div class="step">
+                    <div class="step-number">Step 1</div>
+                    <kbd>Ctrl+T</kbd>
+                    <p>Start recording</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">Step 2</div>
+                    <kbd>&#128483;</kbd>
+                    <p>Say what you want to type</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">Step 3</div>
+                    <kbd>Return</kbd>
+                    <p>Transcribe and type</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="install" id="install">
+            <h2>Install</h2>
+            <div class="code-block">
+                <span class="comment"># Clone and build</span><br>
+                <span class="cmd">git clone</span> https://github.com/augmentedmike/whisper-hotkey.git<br>
+                <span class="cmd">cd</span> whisper-hotkey<br>
+                <span class="cmd">make install</span><br>
+                <br>
+                <span class="comment"># Run it</span><br>
+                <span class="cmd">whisper-hotkey</span>
+            </div>
+            <p style="text-align: center; color: var(--text-muted); margin-top: 16px; font-size: 14px;">
+                The Whisper model (~142 MB) is downloaded automatically on first launch.
+            </p>
+        </section>
+
+        <section class="why">
+            <h2>Why Whisper Hotkey?</h2>
+            <div class="comparison">
+                <div class="comparison-item">
+                    <span class="comparison-icon" aria-hidden="true">&#10060;</span>
+                    <div>
+                        <h4>Whisper-based apps</h4>
+                        <p>Charge a subscription or require an OpenAI API key.</p>
+                    </div>
+                </div>
+                <div class="comparison-item">
+                    <span class="comparison-icon" aria-hidden="true">&#10060;</span>
+                    <div>
+                        <h4>macOS Dictation</h4>
+                        <p>Sends audio to Apple servers. Limited control over formatting.</p>
+                    </div>
+                </div>
+                <div class="comparison-item">
+                    <span class="comparison-icon" aria-hidden="true">&#10060;</span>
+                    <div>
+                        <h4>Cloud speech APIs</h4>
+                        <p>Cost money per minute. Your audio leaves your machine.</p>
+                    </div>
+                </div>
+                <div class="comparison-item highlight">
+                    <span class="comparison-icon" aria-hidden="true">&#9989;</span>
+                    <div>
+                        <h4>Whisper Hotkey</h4>
+                        <p>One binary. Runs locally. Free. No account. No network requests.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="requirements">
+            <h2>Requirements</h2>
+            <ul class="req-list">
+                <li>macOS 13 or later</li>
+                <li>Microphone permission</li>
+                <li>Accessibility permission (for typing into apps)</li>
+                <li>Xcode Command Line Tools (for building from source)</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>
+                <a href="https://github.com/augmentedmike/whisper-hotkey">GitHub</a>
+                &nbsp;&middot;&nbsp;
+                <a href="https://github.com/augmentedmike/whisper-hotkey/blob/main/LICENSE">MIT License</a>
+            </p>
+        </footer>
+
+    </div>
+</body>
+</html>
